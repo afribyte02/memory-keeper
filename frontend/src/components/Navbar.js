@@ -8,7 +8,7 @@ import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import {
-  FiHome, FiUpload, FiSearch, FiCalendar,
+  FiHome, FiUpload, FiSearch, FiCalendar, FiGlobe,
   FiLogOut, FiUser, FiMenu, FiX
 } from 'react-icons/fi';
 import { MdOutlineMemory } from 'react-icons/md';
@@ -19,6 +19,7 @@ const NAV_LINKS = [
   { to: '/upload',      label: 'Add Memory',  icon: <FiUpload /> },
   { to: '/search',      label: 'Search',      icon: <FiSearch /> },
   { to: '/on-this-day', label: 'On This Day', icon: <FiCalendar /> },
+  { to: '/community',   label: 'Community',   icon: <FiGlobe /> },
 ];
 
 export default function Navbar() {

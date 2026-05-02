@@ -10,6 +10,7 @@ import UploadMemory from './pages/UploadMemory';
 import MemoryDetail from './pages/MemoryDetail';
 import OnThisDay    from './pages/OnThisDay';
 import SearchPage   from './pages/SearchPage';
+import Community    from './pages/Community';
 
 // Components
 import Navbar        from './components/Navbar';
@@ -48,6 +49,7 @@ function AppShell() {
           <Route path="/memory/:id"      element={<ProtectedRoute><MemoryDetail /></ProtectedRoute>} />
           <Route path="/on-this-day"     element={<ProtectedRoute><OnThisDay /></ProtectedRoute>} />
           <Route path="/search"          element={<ProtectedRoute><SearchPage /></ProtectedRoute>} />
+          <Route path="/community"       element={<ProtectedRoute><Community /></ProtectedRoute>} />
 
           {/* Default redirect */}
           <Route path="/"  element={<Navigate to="/dashboard" replace />} />

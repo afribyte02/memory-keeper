@@ -1,12 +1,51 @@
 /**
  * Memories Routes — /api/memories
- * Full CRUD + "On This Day" feature
+ * Full CRUD + "On This Day" + Public Feed
  */
 
 const express = require('express');
 const router = express.Router();
 const Memory = require('../models/Memory');
 const { verifyToken } = require('../middleware/firebaseAuth');
+
+// ─── GET /api/memories/public ──────────────────────────────────────────────────
+// Public community feed — returns all public memories from every user
+router.get('/public', verifyToken, async (req, res) => {
+  try {
+    const { page = 1, limit = 12, mood, sortBy = 'date', order = 'desc' } = req.query;
+
+    const query = { isPrivate: false };
+    if (mood && mood !== 'all') query.mood = mood;
+
+    const sortOrder = order === 'asc' ? 1 : -1;
+    const sortField = ['date', 'createdAt', 'viewCount'].includes(sortBy) ? sortBy : 'date';
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    const [memories, total] = await Promise.all([
+      Memory.find(query)
+        .sort({ [sortField]: sortOrder })
+        .limit(parseInt(limit))
+        .skip(skip)
+        .lean(),
+      Memory.countDocuments(query),
+    ]);
+
+    res.json({
+      success: true,
+      memories,
+      pagination: {
+        totalPages: Math.ceil(total / parseInt(limit)),
+        currentPage: parseInt(page),
+        total,
+        hasNextPage: parseInt(page) < Math.ceil(total / parseInt(limit)),
+        hasPrevPage: parseInt(page) > 1,
+      },
+    });
+  } catch (error) {
+    console.error('GET /memories/public error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
 
 // ─── GET /api/memories ─────────────────────────────────────────────────────────
 // Fetch paginated memories for the authenticated user

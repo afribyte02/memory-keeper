@@ -76,6 +76,10 @@ export const getOnThisDay = () =>
 export const getStats = () =>
   api.get('/memories/stats').then((r) => r.data);
 
+/** Fetch the public community feed (all public memories from all users) */
+export const getPublicFeed = (params = {}) =>
+  api.get('/memories/public', { params }).then((r) => r.data);
+
 // ══════════════════════════════════════════════════════════════════
 // SEARCH API
 // ══════════════════════════════════════════════════════════════════
