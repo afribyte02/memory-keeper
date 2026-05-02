@@ -190,12 +190,16 @@ router.get('/on-this-day', verifyToken, async (req, res) => {
 });
 
 // ─── GET /api/memories/:id ─────────────────────────────────────────────────────
-// Get a single memory by ID
+// Get a single memory by ID — accessible if own memory OR public memory
 router.get('/:id', verifyToken, async (req, res) => {
   try {
+    // Allow access if: memory belongs to the current user OR memory is public
     const memory = await Memory.findOne({
       _id: req.params.id,
-      userId: req.user.uid,
+      $or: [
+        { userId: req.user.uid },       // owner always has access
+        { isPrivate: false },           // any user can view public memories
+      ],
     });
 
     if (!memory) {

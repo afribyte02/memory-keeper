@@ -9,9 +9,10 @@ import { format } from 'date-fns';
 import { toast } from 'react-toastify';
 import {
   FiArrowLeft, FiEdit2, FiTrash2, FiMapPin,
-  FiCalendar, FiEye, FiImage, FiVideo, FiMic
+  FiCalendar, FiEye, FiImage, FiVideo, FiMic, FiGlobe
 } from 'react-icons/fi';
 import { getMemory, deleteMemory } from '../api/memoryApi';
+import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import './MemoryDetail.css';
 
@@ -23,6 +24,7 @@ const MOOD_EMOJI = {
 export default function MemoryDetail() {
   const { id }    = useParams();
   const navigate  = useNavigate();
+  const { userUID } = useAuth();
 
   const [memory,    setMemory]    = useState(null);
   const [loading,   setLoading]   = useState(true);
@@ -62,7 +64,8 @@ export default function MemoryDetail() {
     </div>
   );
 
-  const { title, description, mood, date, media, tags, location, viewCount, isPrivate, createdAt } = memory;
+  const { title, description, mood, date, media, tags, location, viewCount, isPrivate, createdAt, userId: memoryOwnerId } = memory;
+  const isOwner     = userUID && memoryOwnerId === userUID;
   const activeMedia = media?.[activeIdx];
   const hasMedia    = media?.length > 0;
 
@@ -73,14 +76,16 @@ export default function MemoryDetail() {
         <button className="btn btn-ghost" onClick={() => navigate(-1)}>
           <FiArrowLeft /> Back
         </button>
-        <div className="detail-header__actions">
-          <button className="btn btn-secondary btn-sm" onClick={() => navigate(`/upload?edit=${id}`)}>
-            <FiEdit2 /> Edit
-          </button>
-          <button className="btn btn-danger btn-sm" onClick={handleDelete} disabled={deleting}>
-            <FiTrash2 /> {deleting ? 'Deleting…' : 'Delete'}
-          </button>
-        </div>
+        {isOwner && (
+          <div className="detail-header__actions">
+            <button className="btn btn-secondary btn-sm" onClick={() => navigate(`/upload?edit=${id}`)}>
+              <FiEdit2 /> Edit
+            </button>
+            <button className="btn btn-danger btn-sm" onClick={handleDelete} disabled={deleting}>
+              <FiTrash2 /> {deleting ? 'Deleting…' : 'Delete'}
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="detail-layout">
@@ -142,7 +147,12 @@ export default function MemoryDetail() {
             {isPrivate ? (
               <span className="badge badge-primary">🔒 Private</span>
             ) : (
-              <span className="badge badge-primary">🌍 Public</span>
+              <span className="badge badge-primary"><FiGlobe size={11} /> Public</span>
+            )}
+            {!isOwner && (
+              <span className="badge" style={{ background: 'rgba(108,99,255,0.15)', color: 'var(--primary-light)', fontSize: '0.7rem' }}>
+                👤 Shared memory
+              </span>
             )}
           </div>
 
