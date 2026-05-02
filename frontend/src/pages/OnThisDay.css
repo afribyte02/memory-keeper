@@ -1,0 +1,178 @@
+/* ── On This Day Styles ─────────────────────────────────────── */
+
+.otd-page {
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-16);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-10);
+}
+
+/* ── Hero ───────────────────────────────────────────────────── */
+.otd-hero {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-8) var(--space-10);
+}
+
+.otd-hero__calendar {
+  flex-shrink: 0;
+  width: 100px; height: 100px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 30px var(--primary-glow);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+.otd-hero__month {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.8);
+}
+.otd-hero__day {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+.otd-hero__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  margin-bottom: var(--space-2);
+}
+
+.otd-count {
+  font-size: 0.95rem;
+}
+
+/* ── Timeline ───────────────────────────────────────────────── */
+.otd-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.otd-entry {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: var(--space-6);
+  position: relative;
+}
+
+/* ── Year column ─────────────────────────────────────────────── */
+.otd-entry__year-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  position: relative;
+}
+.otd-year-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(108,99,255,0.2);
+  border: 1.5px solid rgba(108,99,255,0.4);
+  color: var(--primary-light);
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  font-family: var(--font-display);
+}
+.otd-years-ago { text-align: center; }
+.otd-line {
+  flex: 1;
+  width: 2px;
+  background: linear-gradient(to bottom, rgba(108,99,255,0.4), transparent);
+  min-height: 40px;
+  margin: var(--space-2) 0;
+}
+
+/* ── Entry Card ─────────────────────────────────────────────── */
+.otd-entry__card {
+  margin-bottom: var(--space-6);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.otd-entry__thumb {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.otd-entry__thumb-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+.otd-entry__card:hover .otd-entry__thumb-img { transform: scale(1.05); }
+
+.otd-entry__body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.otd-entry__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.otd-entry__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.otd-entry__desc {
+  line-height: 1.6;
+}
+.otd-entry__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.otd-entry__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: var(--space-2);
+}
+.otd-entry__view-link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--primary-light);
+  transition: gap var(--transition-fast);
+}
+.otd-entry__card:hover .otd-entry__view-link { gap: 8px; }
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .otd-hero { flex-direction: column; text-align: center; padding: var(--space-6); }
+  .otd-entry { grid-template-columns: 90px 1fr; gap: var(--space-3); }
+  .otd-year-badge { font-size: 0.75rem; padding: 5px 10px; }
+}
+@media (max-width: 480px) {
+  .otd-entry { grid-template-columns: 1fr; }
+  .otd-entry__year-col { flex-direction: row; }
+  .otd-line { display: none; }
+}
